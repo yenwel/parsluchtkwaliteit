@@ -33,6 +33,25 @@ struct Record {
     so2 : String,
 }
 
+#[derive(Debug,Deserialize,Clone)]
+struct Payload {
+    devAddr : String,
+    packetIdentifier : String,
+    packetsLeft : f64,
+    gatewayEui : String,
+    packetTime : String,
+    localTime : String,
+    tmst : f64,
+    frequency : f64,
+    dataRate : String,
+    rssi : f64,
+    snr : f64,
+    fcnt : String,
+    micValid : String,
+    payload : String,
+    rawData : String,
+}
+
 fn main() {
     println!("Running");
     let mut rdr =  
@@ -45,6 +64,12 @@ fn main() {
                     .unwrap()
                     .deserialize::<Record>(None)
                     .unwrap()
-                );
+            )
+            .map(|record| 
+                    (
+                        record.clone(),
+                        serde_json::from_str::<Payload>(&record.payload.clone()).unwrap()
+                    )
+            );
     println!("{:?}",records.nth(0).unwrap())
 }
