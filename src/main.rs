@@ -4,6 +4,7 @@ extern crate serde_json;
 //extern crate carboxyl;
 #[macro_use]
 extern crate serde_derive;
+extern crate base64;
 
 use csv::Reader;
 
@@ -70,6 +71,14 @@ fn main() {
                         record.clone(),
                         serde_json::from_str::<Payload>(&record.payload.clone()).unwrap()
                     )
+            )
+            .map(
+                |tuple|
+                (
+                    tuple.0.clone(),
+                    tuple.1.clone(),
+                    String::from_utf8(base64::decode(&tuple.1.payload).unwrap())
+                )
             );
     println!("{:?}",records.nth(0).unwrap())
 }
