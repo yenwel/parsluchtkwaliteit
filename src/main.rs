@@ -77,8 +77,10 @@ fn main() {
                 (
                     tuple.0.clone(),
                     tuple.1.clone(),
-                    String::from_utf8(base64::decode(&tuple.1.payload).unwrap())
+                    String::from_utf8(base64::decode(&tuple.1.payload).unwrap()),
+                    String::from_utf8(base64::decode(&tuple.1.rawData).unwrap())
                 )
             );
     println!("{:?}",records.nth(0).unwrap())
+
 }
